@@ -7,9 +7,11 @@ A modern, clean and customizable resume template in [Typst](https://typst.app/).
 
 ## Prerequisites
 
-You will need the [Fira Sans](https://fonts.google.com/specimen/Fira+Sans) font installed on your system. If you are using the Typst web app, no further action is necessary (it is already included).
+You will need the [Fira Sans](https://fonts.google.com/specimen/Fira+Sans) font installed on your system (if you are using the Typst web app, it is already included).
 
 This template also uses Font Awesome icons via the [fontawesome](https://typst.app/universe/package/fontawesome) package. You will need to install the [Font Awesome 7 Desktop](https://fontawesome.com/download) fonts on your system, or upload them to your project folder if you use the Typst web app.
+
+**Note: at this time, one of the template's components (`#skill-levels`) does not render properly in PDF exports because of a bug in Typst 0.13.1. You may use the latest development version to fix this (in the web app, go to your project's settings and change the compiler version).**
 
 
 ## Installation
@@ -56,5 +58,22 @@ You can change the sidebar's position and width using `sidebar-position` and `si
   main-content: [
     // ...
   ],
+)
+```
+
+#### Text sizes
+
+The package exports a few predefined text sizes that you may use:
+
+```typ
+#let sizes = (
+  text-b4: 20pt,
+  text-b3: 17pt,
+  text-b2: 14pt,
+  text-b1: 12pt,
+  text-default: 9.5pt,
+  text-s1: 9pt,
+  text-s2: 8pt,
+  text-s3: 7pt,
 )
 ```
