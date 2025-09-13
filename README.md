@@ -18,12 +18,12 @@ This template also uses Font Awesome icons via the [fontawesome](https://typst.a
 
 **Typst web app:** go the [package's page](https://typst.app/universe/package/lavandula) and click *Create project in app*.
 
-**Locally:** create a new Typst project from this template with `typst init @preview/lavandula:0.1.0`.
+**Locally:** create a new Typst project from this template with `typst init @preview/lavandula:0.1.1`.
 
 
 ## Usage
 
-Check out [`templates/main.typ`](templates/main.typ) for an example use. It should be rather exhaustive and self-explanatory on the usage of the different components.
+Check out [`templates/main.typ`](templates/main.typ) for an example use. It should be rather exhaustive and self-explanatory on the usage of the different components. The template should work for CVs with both single and multiple pages.
 
 ### Customization
 
