@@ -30,7 +30,12 @@
   text-s3: 7pt,
 )
 
-#let cv(sidebar-position: "left", sidebar-width: 36%, sidebar: "", main-content: "") = context {
+#let cv(
+  sidebar-position: "left",
+  sidebar-width: 36%,
+  sidebar: "",
+  main-content: "",
+) = context {
   assert(
     ("left", "right").contains(sidebar-position),
     message: "sidebar-position must be left or right",
@@ -45,7 +50,7 @@
     blocks = blocks.rev()
     fills = fills.rev()
   }
-  
+
   grid(
     columns: columns,
     rows: (auto, 1fr),
@@ -60,16 +65,17 @@
   block(inset: (y: 0.8em))[
     #grid(
       columns: (auto, 1fr),
-      rows: (auto),
+      rows: auto,
       gutter: 1em,
       align: horizon,
       [=== #title],
       line(
         length: 100%,
-        stroke: 0.7pt + gradient.linear(
-          get-color("sidebar-section-line"),
-          get-color("sidebar-section-line").transparentize(20%),
-        ),
+        stroke: 0.7pt
+          + gradient.linear(
+            get-color("sidebar-section-line"),
+            get-color("sidebar-section-line").transparentize(20%),
+          ),
       ),
     )
     #v(0.5em)
@@ -85,17 +91,21 @@
       rows: auto,
       gutter: 0.8em,
       align: (top + center, horizon),
-      ..elements.map(element => {(
-        {
-          set text(top-edge: "ascender")
-          fa-icon(
-            fill: get-color(icon-color-name),
-            solid: element.at("icon-solid", default: false),
-            element.icon,
+      ..elements
+        .map(element => {
+          (
+            {
+              set text(top-edge: "ascender")
+              fa-icon(
+                fill: get-color(icon-color-name),
+                solid: element.at("icon-solid", default: false),
+                element.icon,
+              )
+            },
+            element.text,
           )
-        },
-        element.text,
-      )}).flatten()
+        })
+        .flatten()
     ),
   )
 }
@@ -111,7 +121,13 @@
 #let skill-group(name: "", icon: "", icon-solid: false, skills: ()) = context {
   block(below: 10pt)[
     #icon-list(
-      ((icon: icon, icon-solid: icon-solid, text: text(weight: "semibold", name)),),
+      (
+        (
+          icon: icon,
+          icon-solid: icon-solid,
+          text: text(weight: "semibold", name),
+        ),
+      ),
       icon-color-name: "skill-group-icon",
     )
   ]
@@ -137,36 +153,40 @@
       rows: auto,
       gutter: 0.5em,
       align: (horizon + center, horizon, horizon),
-      ..skills.map(skill => {(
-        {
-          set image(width: 12pt)
-          skill.icon
-        },
-        skill.text,
-        box(
-          fill: get-color("progress-bar").transparentize(80%),
-          width: 50pt,
-          height: 6pt,
-        )[
-          #rect(
-            width: skill.level,
-            height: 100%,
-            fill: get-color("progress-bar"),
+      ..skills
+        .map(skill => {
+          (
+            {
+              set image(width: 12pt)
+              skill.icon
+            },
+            skill.text,
+            box(
+              fill: get-color("progress-bar").transparentize(80%),
+              width: 50pt,
+              height: 6pt,
+            )[
+              #rect(
+                width: skill.level,
+                height: 100%,
+                fill: get-color("progress-bar"),
+              )
+              #place(
+                top + left,
+                rect(
+                  width: 100%,
+                  height: 100%,
+                  fill: gradient.linear(
+                    get-color("light").transparentize(100%),
+                    get-color("light").transparentize(70%),
+                  ),
+                ),
+              )
+            ],
           )
-          #place(
-            top + left,
-            rect(
-              width: 100%,
-              height: 100%,
-              fill: gradient.linear(
-                get-color("light").transparentize(100%),
-                get-color("light").transparentize(70%),
-              ),
-            ),
-          )
-        ],
-      )}).flatten()
-    )
+        })
+        .flatten()
+    ),
   )
 }
 
@@ -177,9 +197,9 @@
   ]
 }
 
-#let section-element(title: "", info: "", body) = {
+#let section-element(title: "", info: "", subtitle: "", body) = {
   block(
-    inset: (top: 3pt),
+    inset: (top: 1pt),
     width: 100%,
     below: 1.7em,
     grid(
@@ -187,9 +207,12 @@
       rows: auto,
       gutter: 9pt,
       align: (horizon + left, horizon + right),
-      text(weight: "semibold", title),
-      text(size: sizes.text-s3, info),
+      text(size: 11pt, weight: "semibold", title),
+      text(size: sizes.text-s2, info),
       grid.cell(colspan: 2)[
+        #if subtitle != "" {
+          text(style: "italic", subtitle)
+        }
         #set par(justify: true, spacing: 1em)
         #body
       ],
@@ -197,7 +220,13 @@
   )
 }
 
-#let section-element-advanced(title: "", info-top-right: "", info-top-left: "", icon: "", body) = {
+#let section-element-advanced(
+  title: "",
+  info-top-right: "",
+  info-top-left: "",
+  icon: "",
+  body,
+) = {
   block(
     inset: (top: 3pt),
     width: 100%,
@@ -208,11 +237,13 @@
       row-gutter: 9pt,
       column-gutter: 12pt,
       align: (col, row) => {
-        if col == 0 and row == 0 { horizon + center }
-        else if col == 0 and row == 1 { top + center }
-        else if col == 1 and row == 1 { top + left }
-        else if col == 1 and row == 0 { horizon + left }
-        else if col == 2 { horizon + right }
+        if col == 0 and row == 0 { horizon + center } else if (
+          col == 0 and row == 1
+        ) { top + center } else if col == 1 and row == 1 {
+          top + left
+        } else if col == 1 and row == 0 { horizon + left } else if col == 2 {
+          horizon + right
+        }
       },
       text(size: sizes.text-s3, info-top-left),
       text(weight: "semibold", title),
@@ -238,7 +269,7 @@
 
   // Override with user-provided colors
   for (k, v) in custom-colors {
-    new-base-colors.insert(k, v) 
+    new-base-colors.insert(k, v)
   }
 
   base-colors.update(new-base-colors)
@@ -267,13 +298,13 @@
       fill: get-color("bg"),
       margin: 0%,
     )
-  
+
     set text(
       font: "Fira Sans",
       fill: get-color("text"),
       size: sizes.text-default,
     )
-  
+
     show heading.where(level: 1): it => {
       set text(
         fill: gradient.linear(
@@ -286,16 +317,16 @@
       )
       block(below: 0.8em, it)
     }
-  
+
     show heading.where(level: 2): it => {
       set text(
         fill: get-color("section-title"),
         size: sizes.text-b3,
-        weight: "semibold"
+        weight: "semibold",
       )
       block(below: 1em, it)
     }
-  
+
     show heading.where(level: 3): it => {
       set text(
         fill: get-color("sidebar-section-title"),
@@ -304,7 +335,7 @@
       )
       block(below: 1em, it)
     }
-  
+
     show heading.where(level: 4): it => {
       set text(
         fill: get-color("subtitle"),
@@ -315,7 +346,7 @@
     }
 
     show highlight: it => context text(fill: get-color("highlight"), it.body)
-  
+
     body
   }
 }
