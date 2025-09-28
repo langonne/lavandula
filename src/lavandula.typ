@@ -207,11 +207,11 @@
       rows: auto,
       gutter: 9pt,
       align: (horizon + left, horizon + right),
-      text(size: 11pt, weight: "semibold", title),
+      text(size: 11.5pt, weight: "semibold", title),
       text(size: sizes.text-s2, info),
       grid.cell(colspan: 2)[
         #if subtitle != "" {
-          text(style: "italic", subtitle)
+          text(fill: rgb("#6b6b6b"), style: "italic", subtitle)
         }
         #set par(justify: true, spacing: 1em)
         #body
